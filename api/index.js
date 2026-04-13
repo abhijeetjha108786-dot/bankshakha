@@ -1,13 +1,16 @@
-const env = require("../src/config/env");
-const connectDB = require("../src/config/db");
-const app = require("../src/app");
-const { seedInitialData } = require("../src/services/seed.service");
-
 let bootstrapPromise;
+let app;
 
 async function bootstrapOnce() {
   if (!bootstrapPromise) {
     bootstrapPromise = (async () => {
+      // Load runtime dependencies lazily so configuration errors are catchable
+      // and returned as JSON instead of crashing the serverless function.
+      const env = require("../src/config/env");
+      const connectDB = require("../src/config/db");
+      const { seedInitialData } = require("../src/services/seed.service");
+      app = require("../src/app");
+
       await connectDB(env.MONGODB_URI);
 
       if (env.AUTO_SEED) {
@@ -31,6 +34,7 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({
       success: false,
       message: "Server bootstrap failed",
+      error: error.message,
     });
   }
 };
