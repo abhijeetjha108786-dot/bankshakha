@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
@@ -80,9 +79,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/app", appRoutes);
 app.use("/api/admin", adminRoutes);
 
-app.use("/admin", express.static(path.join(__dirname, "../bankshakha-page/admin")));
 app.get("/", (req, res) => {
-  res.redirect("/admin");
+  res.redirect("/api/health");
 });
 
 app.use(notFound);

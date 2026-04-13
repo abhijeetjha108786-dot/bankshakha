@@ -56,6 +56,7 @@ This folder is ready for Vercel serverless deployment.
 - `JWT_SECRET=<very-long-random-secret>`
 - `JWT_EXPIRES_IN=7d`
 - `ALLOW_DEV_OTP=false`
+- `SYNC_ADMIN_PASSWORD=false`
 - `AUTO_SEED=false`
 - `ADMIN_EMAIL=admin@bankshakha.com`
 - `ADMIN_PASSWORD=<strong-admin-password>`

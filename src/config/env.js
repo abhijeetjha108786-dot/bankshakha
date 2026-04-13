@@ -23,6 +23,7 @@ const env = {
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "7d",
   ALLOW_DEV_OTP: (process.env.ALLOW_DEV_OTP || "false").toLowerCase() === "true",
+  SYNC_ADMIN_PASSWORD: (process.env.SYNC_ADMIN_PASSWORD || "false").toLowerCase() === "true",
   AUTO_SEED: (process.env.AUTO_SEED || "true").toLowerCase() === "true",
   ADMIN_EMAIL: process.env.ADMIN_EMAIL || "admin@bankshakha.com",
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || "Admin@123",

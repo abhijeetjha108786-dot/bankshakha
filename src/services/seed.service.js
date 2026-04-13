@@ -9,18 +9,35 @@ const Notification = require("../models/notification.model");
 const SuccessStory = require("../models/successStory.model");
 const Banner = require("../models/banner.model");
 
-async function seedInitialData() {
-  const adminExists = await User.findOne({ email: env.ADMIN_EMAIL.toLowerCase() });
-  if (!adminExists) {
-    const hashedPassword = await bcrypt.hash(env.ADMIN_PASSWORD, 10);
+async function ensureAdminUser() {
+  const adminEmail = String(env.ADMIN_EMAIL || "").toLowerCase().trim();
+  if (!adminEmail) return;
+
+  const existingAdmin = await User.findOne({ email: adminEmail });
+  const hashedPassword = await bcrypt.hash(env.ADMIN_PASSWORD, 10);
+
+  if (!existingAdmin) {
     await User.create({
       name: "Super Admin",
-      email: env.ADMIN_EMAIL.toLowerCase(),
+      email: adminEmail,
       password: hashedPassword,
       role: "admin",
       isActive: true,
     });
+    return;
   }
+
+  if (env.SYNC_ADMIN_PASSWORD) {
+    existingAdmin.password = hashedPassword;
+    existingAdmin.role = "admin";
+    existingAdmin.isActive = true;
+    if (!existingAdmin.name) existingAdmin.name = "Super Admin";
+    await existingAdmin.save();
+  }
+}
+
+async function seedInitialData() {
+  await ensureAdminUser();
 
   const categoriesCount = await Category.countDocuments();
   if (categoriesCount === 0) {
@@ -191,4 +208,4 @@ async function seedInitialData() {
   }
 }
 
-module.exports = { seedInitialData };
+module.exports = { seedInitialData, ensureAdminUser };

@@ -6,10 +6,11 @@ async function bootstrapOnce() {
     bootstrapPromise = (async () => {
       const env = require("../src/config/env");
       const connectDB = require("../src/config/db");
-      const { seedInitialData } = require("../src/services/seed.service");
+      const { seedInitialData, ensureAdminUser } = require("../src/services/seed.service");
       app = require("../src/app");
 
       await connectDB(env.MONGODB_URI);
+      await ensureAdminUser();
 
       if (env.AUTO_SEED) {
         await seedInitialData();
