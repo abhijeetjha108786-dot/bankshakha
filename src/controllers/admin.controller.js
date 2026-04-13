@@ -607,7 +607,7 @@ const deleteBanner = asyncHandler(async (req, res) => {
 });
 
 const updateProfile = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, currentPassword, newPassword, password } = req.body;
   const userId = req.user._id; // From protect middleware
 
   const user = await User.findById(userId);
@@ -615,12 +615,49 @@ const updateProfile = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found");
   }
 
-  if (name) user.name = String(name).trim();
-  if (email) user.email = String(email).trim().toLowerCase();
-  
-  if (password && String(password).trim().length > 0) {
+  const normalizedName = String(name || "").trim();
+  const normalizedEmail = String(email || "").trim().toLowerCase();
+  const oldPassword = String(currentPassword || "").trim();
+  const requestedNewPassword = String(newPassword || password || "").trim();
+
+  const wantsNameUpdate = Boolean(normalizedName) && normalizedName !== String(user.name || "").trim();
+  const wantsEmailUpdate = Boolean(normalizedEmail) && normalizedEmail !== String(user.email || "").trim().toLowerCase();
+  const wantsPasswordUpdate = Boolean(requestedNewPassword);
+
+  if (!wantsNameUpdate && !wantsEmailUpdate && !wantsPasswordUpdate) {
+    throw new ApiError(400, "No profile changes provided");
+  }
+
+  if (!oldPassword) {
+    throw new ApiError(400, "Current password is required");
+  }
+
+  if (!user.password) {
+    throw new ApiError(400, "Password update is not available for this account");
+  }
+
+  const matched = await bcrypt.compare(oldPassword, user.password);
+  if (!matched) {
+    throw new ApiError(401, "Current password is incorrect");
+  }
+
+  if (wantsNameUpdate) {
+    if (normalizedName.length < 2 || normalizedName.length > 60) {
+      throw new ApiError(400, "Name must be between 2 and 60 characters");
+    }
+    user.name = normalizedName;
+  }
+
+  if (wantsEmailUpdate) {
+    user.email = normalizedEmail;
+  }
+
+  if (wantsPasswordUpdate) {
+    if (requestedNewPassword.length < 6) {
+      throw new ApiError(400, "New password must be at least 6 characters");
+    }
     const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(String(password).trim(), salt);
+    user.password = await bcrypt.hash(requestedNewPassword, salt);
   }
 
   await user.save();
