@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BankShakha Admin | Premium Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <i data-lucide="shield-check"></i>
+            <span>BankShakha</span>
+          </div>
+          <p class="tagline">Admin Control Center</p>
+        </div>
+        
+        <nav class="sidebar-nav">
+          <a href="#stats" class="nav-link active"><i data-lucide="layout-dashboard"></i> Overview</a>
+          <a href="#categories" class="nav-link"><i data-lucide="layers"></i> Categories</a>
+          <a href="#products" class="nav-link"><i data-lucide="shopping-bag"></i> Products</a>
+          <a href="#app-users" class="nav-link"><i data-lucide="smartphone"></i> App Users</a>
+          <a href="#earnings" class="nav-link"><i data-lucide="indian-rupee"></i> Earnings</a>
+          <a href="#notifications" class="nav-link"><i data-lucide="bell"></i> Notifications</a>
+          <a href="#stories" class="nav-link"><i data-lucide="scroll"></i> Stories</a>
+          <a href="#banners" class="nav-link"><i data-lucide="image"></i> Banners</a>
+          <a href="#profile" class="nav-link"><i data-lucide="user"></i> Profile</a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button id="logoutBtn" class="btn btn-logout hidden">
+            <i data-lucide="log-out"></i>
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <!-- Login Section -->
+        <section id="loginSection" class="login-container">
+          <div class="login-card glass">
+            <div class="login-header">
+              <i data-lucide="lock" class="login-icon"></i>
+              <h2>Welcome Back</h2>
+              <p>Sign in to access the admin panel</p>
+            </div>
+            <form id="loginForm" class="login-form">
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrapper">
+                  <i data-lucide="mail"></i>
+                  <input id="email" type="email" placeholder="admin@bankshakha.com" required />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                  <i data-lucide="key"></i>
+                  <input id="password" type="password" placeholder="••••••••" required />
+                </div>
+              </div>
+              <button class="btn btn-primary btn-block" type="submit">
+                <span>Login Securely</span>
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- Main Panel Section -->
+        <section id="panelSection" class="panel-container hidden">
+          <header class="panel-header">
+            <div>
+              <h1 id="pageTitle">Dashboard Overview</h1>
+              <p class="muted">Monitor and manage your financial services platform</p>
+            </div>
+            <div class="current-date" id="currentDate"></div>
+          </header>
+
+          <!-- Overview / Stats Section -->
+          <div id="overviewSection" class="section-view active">
+            <div class="stats-grid">
+              <article class="stat-card glass">
+                <div class="stat-icon category"><i data-lucide="layers"></i></div>
+                <div class="stat-info">
+                  <h3>Categories</h3>
+                  <p class="stat-value" id="statCategories">0</p>
+                </div>
+              </article>
+              <article class="stat-card glass">
+                <div class="stat-icon product"><i data-lucide="shopping-bag"></i></div>
+                <div class="stat-info">
+                  <h3>Products</h3>
+                  <p class="stat-value" id="statProducts">0</p>
+                </div>
+              </article>
+              <article class="stat-card glass">
+                <div class="stat-icon customer"><i data-lucide="smartphone"></i></div>
+                <div class="stat-info">
+                  <h3>App Users</h3>
+                  <p class="stat-value" id="statAppUsers">0</p>
+                </div>
+              </article>
+              <article class="stat-card glass">
+                <div class="stat-icon notification"><i data-lucide="bell"></i></div>
+                <div class="stat-info">
+                  <h3>Alerts</h3>
+                  <p class="stat-value" id="statNotifications">0</p>
+                </div>
+              </article>
+              <article class="stat-card glass highlight">
+                <div class="stat-icon earning"><i data-lucide="trending-up"></i></div>
+                <div class="stat-info">
+                  <h3>Earnings</h3>
+                  <p class="stat-value accent" id="statEarnings">₹ 0</p>
+                </div>
+              </article>
+              <article class="stat-card glass">
+                <div class="stat-icon story"><i data-lucide="award"></i></div>
+                <div class="stat-info">
+                  <h3>Success</h3>
+                  <p class="stat-value" id="statStories">0</p>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <!-- Categories Section -->
+          <div id="categoriesSection" class="section-view">
+            <div class="card glass">
+              <div class="card-header">
+                <div class="card-title">
+                  <i data-lucide="plus-circle"></i>
+                  <h3>Manage Categories</h3>
+                </div>
+                <button class="btn btn-primary open-modal-btn" data-target="categoryModal">Add Category</button>
+              </div>
+              <div id="categoryModal" class="modal-overlay hidden">
+                <div class="modal-card glass">
+                  <div class="modal-header">
+                    <h4>Add Category</h4>
+                    <button type="button" class="btn btn-danger modal-close" data-target="categoryModal">Close</button>
+                  </div>
+                  <form id="categoryForm" class="form-grid">
+                    <input id="categorySlug" placeholder="Slug (e.g. credit-card)" required />
+                    <input id="categoryTitle" placeholder="Title" required />
+                    <input id="categoryIcon" placeholder="Icon (e.g. card-outline)" required />
+                    <input id="categoryColor" placeholder="Color Hex (e.g. #3B82F6)" required />
+                    <button class="btn btn-primary" type="submit">Save Category</button>
+                  </form>
+                </div>
+              </div>
+              <div id="categoriesList"></div>
+            </div>
+          </div>
+
+          <!-- Products Section -->
+          <div id="productsSection" class="section-view">
+            <div class="card glass">
+              <div class="card-header">
+                <div class="card-title">
+                  <i data-lucide="package"></i>
+                  <h3>Manage Products</h3>
+                </div>
+                <button class="btn btn-primary open-modal-btn" data-target="productModal">Add Product</button>
+              </div>
+              <div id="productModal" class="modal-overlay hidden">
+                <div class="modal-card glass">
+                  <div class="modal-header">
+                    <h4>Add Product</h4>
+                    <button type="button" class="btn btn-danger modal-close" data-target="productModal">Close</button>
+                  </div>
+                  <form id="productForm" class="form-grid cols-3">
+                    <div class="field-group">
+                      <label for="productCode">Product Code</label>
+                      <input id="productCode" placeholder="e.g. axis-credit-card" required />
+                    </div>
+                    <div class="field-group">
+                      <label for="productCategorySlug">Category</label>
+                      <select id="productCategorySlug" required>
+                        <option value="">Select Category</option>
+                      </select>
+                    </div>
+                    <div class="field-group">
+                      <label for="productName">Product Name</label>
+                      <input id="productName" placeholder="e.g. Axis Bank Credit Card" required />
+                    </div>
+
+                    <div class="field-group">
+                      <label for="productCommissionType">Commission Type</label>
+                      <select id="productCommissionType" required>
+                        <option value="fixed">Fixed Amount</option>
+                        <option value="percentage">Percentage</option>
+                      </select>
+                    </div>
+                    <div class="field-group">
+                      <label for="productCommissionValue">Commission Value</label>
+                      <input id="productCommissionValue" type="number" min="0" step="0.01" placeholder="e.g. 500 or 2.5" required />
+                    </div>
+                    <div class="field-group">
+                      <label for="productLogoPreset">Icon Name</label>
+                      <select id="productLogoPreset" required>
+                        <option value="card-outline">card-outline</option>
+                        <option value="cash-outline">cash-outline</option>
+                        <option value="wallet-outline">wallet-outline</option>
+                        <option value="trending-up-outline">trending-up-outline</option>
+                        <option value="shield-checkmark-outline">shield-checkmark-outline</option>
+                        <option value="pie-chart-outline">pie-chart-outline</option>
+                        <option value="business-outline">business-outline</option>
+                        <option value="custom">Custom icon...</option>
+                      </select>
+                    </div>
+
+                    <div class="field-group span-full hidden" id="productLogoCustomWrap">
+                      <label for="productLogoCustom">Custom Icon Name</label>
+                      <input id="productLogoCustom" placeholder="e.g. rocket-outline" />
+                    </div>
+
+                    <div class="field-group span-full">
+                      <label for="productDescription">Description</label>
+                      <textarea id="productDescription" placeholder="Write product description..." required></textarea>
+                    </div>
+
+                    <div class="field-group span-full">
+                      <label for="productBenefits">Benefits</label>
+                      <textarea id="productBenefits" placeholder="Benefit 1, Benefit 2, Benefit 3"></textarea>
+                      <small class="field-help">Comma separated values</small>
+                    </div>
+
+                    <div class="field-group span-full">
+                      <label for="productHowToEarn">How To Earn</label>
+                      <textarea id="productHowToEarn" placeholder="Step 1, Step 2, Step 3"></textarea>
+                      <small class="field-help">Comma separated values</small>
+                    </div>
+
+                    <div class="field-group span-full">
+                      <label for="productTerms">Terms & Conditions</label>
+                      <textarea id="productTerms" placeholder="Term 1, Term 2, Term 3"></textarea>
+                      <small class="field-help">Comma separated values</small>
+                    </div>
+                    <button class="btn btn-primary span-full" type="submit">Save Product</button>
+                  </form>
+                </div>
+              </div>
+              <div id="productsList"></div>
+            </div>
+          </div>
+
+          <!-- App Users Section -->
+          <div id="app-usersSection" class="section-view">
+            <div class="card glass">
+              <div class="card-header">
+                <div class="card-title">
+                  <i data-lucide="smartphone"></i>
+                  <h3>Connected App Users</h3>
+                </div>
+              </div>
+              <div id="userNotificationModal" class="modal-overlay hidden">
+                <div class="modal-card glass">
+                  <div class="modal-header">
+                    <h4>Send Notification To User</h4>
+                    <button type="button" class="btn btn-danger modal-close" data-target="userNotificationModal">Close</button>
+                  </div>
+                  <form id="userNotificationForm" class="form-grid">
+                    <input id="userNotificationTargetName" placeholder="Selected user" readonly />
+                    <input id="userNotificationTitle" placeholder="Title" required />
+                    <input id="userNotificationType" placeholder="Type: success/earning/warning/info" />
+                    <input id="userNotificationTime" placeholder="Time label" />
+                    <textarea id="userNotificationMessage" class="span-full" placeholder="Message" required></textarea>
+                    <button class="btn btn-primary span-full" type="submit">Send Notification</button>
+                  </form>
+                </div>
+              </div>
+              <div id="appUsersTableWrap"></div>
+            </div>
+          </div>
+
+          <!-- Earnings Section -->
+          <div id="earningsSection" class="section-view">
+            <div class="card glass">
+              <div class="card-header">
+                <div class="card-title">
+                  <i data-lucide="credit-card"></i>
+                  <h3>Earning Transactions</h3>
+                </div>
+                <button class="btn btn-primary open-modal-btn" data-target="earningModal">Add Earning</button>
+              </div>
+              <div id="earningModal" class="modal-overlay hidden">
+                <div class="modal-card glass">
+                  <div class="modal-header">
+                    <h4>Add Earning</h4>
+                    <button type="button" class="btn btn-danger modal-close" data-target="earningModal">Close</button>
+                  </div>
+                  <form id="earningForm" class="form-grid cols-2">
+                    <input id="earningTitle" placeholder="Title" required />
+                    <input id="earningAmount" placeholder="Amount (number)" type="number" step="0.01" required />
+                    <input id="earningDateLabel" placeholder="Date label (e.g. 08 Apr, 10:20 AM)" required />
+                    <select id="earningType">
+                      <option value="credit">Credit</option>
+                      <option value="debit">Debit</option>
+                    </select>
+                    <button class="btn btn-primary span-full" type="submit">Save Transaction</button>
+                  </form>
+                </div>
+              </div>
+              <div id="earningsList"></div>
+            </div>
+          </div>
+
+          <!-- Notifications Section -->
+          <div id="notificationsSection" class="section-view">
+            <div class="card glass">
+              <div class="card-header">
+                <div class="card-title">
+                  <i data-lucide="bell"></i>
+                  <h3>Push Notifications</h3>
+                </div>
+                <div class="header-actions">
+                  <button id="deleteSelectedNotificationsBtn" class="btn btn-danger" type="button" disabled>
+                    Delete Selected (0)
+                  </button>
+                  <button class="btn btn-primary open-modal-btn" data-target="notificationModal">Add Notification</button>
+                </div>
+              </div>
+              <div id="notificationModal" class="modal-overlay hidden">
+                <div class="modal-card glass">
+                  <div class="modal-header">
+                    <h4>Add Notification</h4>
+                    <button type="button" class="btn btn-danger modal-close" data-target="notificationModal">Close</button>
+                  </div>
+                  <form id="notificationForm" class="form-grid">
+                    <input id="notificationTitle" placeholder="Title" required />
+                    <input id="notificationType" placeholder="Type: success/earning/warning/info" />
+                    <input id="notificationTime" placeholder="Time label" />
+                    <textarea id="notificationMessage" class="span-full" placeholder="Message" required></textarea>
+                    <button class="btn btn-primary span-full" type="submit">Save Notification</button>
+                  </form>
+                </div>
+              </div>
+              <div id="notificationsList"></div>
+            </div>
+          </div>
+
+          <!-- Stories Section -->
+          <div id="storiesSection" class="section-view">
+            <div class="card glass">
+              <div class="card-header">
+                <div class="card-title">
+                  <i data-lucide="message-square"></i>
+                  <h3>Success Stories</h3>
+                </div>
+                <button class="btn btn-primary open-modal-btn" data-target="storyModal">Add Story</button>
+              </div>
+              <div id="storyModal" class="modal-overlay hidden">
+                <div class="modal-card glass">
+                  <div class="modal-header">
+                    <h4>Add Story</h4>
+                    <button type="button" class="btn btn-danger modal-close" data-target="storyModal">Close</button>
+                  </div>
+                  <form id="storyForm" class="form-grid cols-2">
+                    <input id="storyName" placeholder="Customer Name" required />
+                    <input id="storyLocation" placeholder="Location" required />
+                    <input id="storyAvatar" placeholder="Avatar initial (optional)" />
+                    <input id="storyColor" placeholder="Color Hex" required />
+                    <textarea id="storyQuote" class="span-full" placeholder="Story quote" required></textarea>
+                    <button class="btn btn-primary span-full" type="submit">Save Story</button>
+                  </form>
+                </div>
+              </div>
+              <div id="storiesList"></div>
+            </div>
+          </div>
+
+          <!-- Banners Section -->
+          <div id="bannersSection" class="section-view">
+            <div class="card glass">
+              <div class="card-header">
+                <div class="card-title">
+                  <i data-lucide="image"></i>
+                  <h3>Home Banners</h3>
+                </div>
+                <button id="openBannerModalBtn" class="btn btn-primary open-modal-btn" data-target="bannerModal">Add Banner</button>
+              </div>
+              <div id="bannerModal" class="modal-overlay hidden">
+                <div class="modal-card glass">
+                  <div class="modal-header">
+                    <h4 id="bannerModalTitle">Add Banner</h4>
+                    <button type="button" class="btn btn-danger modal-close" data-target="bannerModal">Close</button>
+                  </div>
+                  <form id="bannerForm" class="form-grid cols-2">
+                    <input id="bannerId" type="hidden" />
+                    <div class="field-group span-full">
+                      <label for="bannerTitle">Banner Title (optional)</label>
+                      <input id="bannerTitle" placeholder="e.g. Festival Offer Banner" />
+                    </div>
+                    <div class="field-group span-full">
+                      <label for="bannerImageUrl">Image URL</label>
+                      <input id="bannerImageUrl" placeholder="https://example.com/banner.jpg" required />
+                    </div>
+                    <div class="field-group">
+                      <label for="bannerSortOrder">Sort Order</label>
+                      <input id="bannerSortOrder" type="number" min="0" step="1" value="1" />
+                    </div>
+                    <div class="field-group">
+                      <label for="bannerIsActive">Status</label>
+                      <select id="bannerIsActive">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                      </select>
+                    </div>
+                    <button class="btn btn-primary span-full" type="submit" id="bannerSubmitBtn">Save Banner</button>
+                  </form>
+                </div>
+              </div>
+              <div id="bannersList"></div>
+            </div>
+          </div>
+
+          <!-- Profile Section -->
+          <div id="profileSection" class="section-view">
+            <div class="card glass">
+              <div class="card-header">
+                <div class="card-title">
+                  <i data-lucide="user"></i>
+                  <h3>Admin Profile</h3>
+                </div>
+              </div>
+              <form id="profileForm" class="form-grid">
+                <div class="form-group">
+                  <label for="profileName">Full Name</label>
+                  <input id="profileName" placeholder="Admin Name" required />
+                </div>
+                <div class="form-group">
+                  <label for="profileEmail">Email Address</label>
+                  <input id="profileEmail" type="email" placeholder="admin@bankshakha.com" required />
+                </div>
+                <div class="form-group">
+                  <label for="profilePassword">New Password (leave blank to keep current)</label>
+                  <input id="profilePassword" type="password" placeholder="••••••••" />
+                </div>
+                <button class="btn btn-primary" type="submit">Update Profile</button>
+              </form>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
