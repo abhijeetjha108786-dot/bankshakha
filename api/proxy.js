@@ -26,6 +26,14 @@ async function bootstrapOnce() {
 module.exports = async function handler(req, res) {
   try {
     await bootstrapOnce();
+
+    const parsed = new URL(req.url, "http://localhost");
+    const path = (parsed.searchParams.get("path") || "").replace(/^\/+/, "");
+    parsed.searchParams.delete("path");
+
+    const query = parsed.searchParams.toString();
+    req.url = `/api/${path}${query ? `?${query}` : ""}`;
+
     return app(req, res);
   } catch (error) {
     console.error("Vercel bootstrap failed:", error.message);

@@ -1,9 +1,27 @@
 {
   "version": 2,
   "functions": {
-    "api/[...all].js": {
+    "api/proxy.js": {
       "maxDuration": 30,
       "includeFiles": "public/**"
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/proxy?path=$1"
+    },
+    {
+      "source": "/admin",
+      "destination": "/api/proxy?path=admin"
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "/api/proxy?path=admin/$1"
+    },
+    {
+      "source": "/",
+      "destination": "/api/proxy?path="
+    }
+  ]
 }
