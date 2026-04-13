@@ -98,7 +98,7 @@ const sendUserOtp = asyncHandler(async (req, res) => {
     data: {
       phone,
       expiresAt: otpExpiresAt.toISOString(),
-      devOtp: env.NODE_ENV === "production" ? undefined : otp,
+      devOtp: env.NODE_ENV === "production" && !env.ALLOW_DEV_OTP ? undefined : otp,
     },
   });
 });
