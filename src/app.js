@@ -80,7 +80,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/app", appRoutes);
 app.use("/api/admin", adminRoutes);
 
-app.use("/admin", express.static(path.join(__dirname, "../public/admin")));
+app.use("/admin", express.static(path.join(__dirname, "../bankshakha-page/admin")));
 app.get("/", (req, res) => {
   res.redirect("/admin");
 });

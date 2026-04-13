@@ -18,11 +18,16 @@ const API_BASE = (() => {
   const saved = localStorage.getItem("adminApiBaseUrl");
   if (saved) return saved.replace(/\/+$/, "");
 
-  if (typeof window !== "undefined" && /^https?:/i.test(window.location.origin)) {
-    return window.location.origin.replace(/\/+$/, "");
+  if (typeof window !== "undefined") {
+    const queryApiBase = new URLSearchParams(window.location.search).get("apiBase");
+    if (queryApiBase) return queryApiBase.replace(/\/+$/, "");
+
+    if (/^https?:/i.test(window.location.origin) && window.location.pathname.startsWith("/admin")) {
+      return window.location.origin.replace(/\/+$/, "");
+    }
   }
 
-  return "http://localhost:5000";
+  return "https://bankshakha-lf4c.vercel.app";
 })();
 
 // Initialize UI Elements on load

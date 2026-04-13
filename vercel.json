@@ -3,7 +3,7 @@
   "functions": {
     "api/proxy.js": {
       "maxDuration": 30,
-      "includeFiles": "public/**"
+      "includeFiles": "bankshakha-page/admin/**"
     }
   },
   "rewrites": [
